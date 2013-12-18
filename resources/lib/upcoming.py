@@ -31,14 +31,20 @@ def GetUpcomingEpisodes():
     coming_soon = Sickbeard.GetFutureShows()
     upcoming_episodes_list = []
     
+    # Get missed eps
+    if 'missed' in coming_soon and len(coming_soon["missed"]) != 0:
+      day = "Missed"
+      for show in coming_soon['missed']:
+          upcoming_episodes_list.append([str(show['tvdbid']), day+": "+show['show_name']+" - "+str(show['season'])+"x"+str(show['episode'])+" "+show['ep_name']])
+    
     # Get todays coming eps
-    if len(coming_soon["today"]) != 0:
+    if 'today' in coming_soon and len(coming_soon["today"]) != 0:
       day = "Today"
       for show in coming_soon['today']:
           upcoming_episodes_list.append([str(show['tvdbid']), day+": "+show['show_name']+" - "+str(show['season'])+"x"+str(show['episode'])+" "+show['ep_name']])
           
     # Get coming soon eps      
-    if len(coming_soon["soon"]) != 0:    
+    if 'soon' in coming_soon and len(coming_soon["soon"]) != 0:    
       show_list={}
       for show in coming_soon['soon']:
           if show['airdate'] not in show_list:
@@ -49,6 +55,21 @@ def GetUpcomingEpisodes():
 
       for k in sorted(show_list.iterkeys()):
           day = GetWeekDay(show_list[k][0]['weekday'])
+          for show in show_list[k]: 
+              upcoming_episodes_list.append([str(show['tvdbid']), day+": "+show['show_name']+" - "+str(show['season'])+"x"+str(show['episode'])+" "+show['ep_name']])
+
+    # Get later eps      
+    if 'later' in coming_soon and len(coming_soon["later"]) != 0:    
+      show_list={}
+      for show in coming_soon['later']:
+          if show['airdate'] not in show_list:
+              show_list[show['airdate']] = []
+              show_list[show['airdate']].append(show)
+          else:
+              show_list[show['airdate']].append(show)
+
+      for k in sorted(show_list.iterkeys()):
+          day = k
           for show in show_list[k]: 
               upcoming_episodes_list.append([str(show['tvdbid']), day+": "+show['show_name']+" - "+str(show['season'])+"x"+str(show['episode'])+" "+show['ep_name']])
 
