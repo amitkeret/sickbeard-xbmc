@@ -69,6 +69,7 @@ if __url_bool__ == "true":
     __custom_url__= __addon__.getSetting('Sickbeard URL')
 else:
     __custom_url__= ""
+__upcoming__= __addon__.getSetting('Upcoming type')
 
 # Show error pop up then exit plugin
 def messageWindow(header, message):

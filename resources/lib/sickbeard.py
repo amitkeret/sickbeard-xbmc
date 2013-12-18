@@ -69,7 +69,15 @@ class SB:
 
   # Get list of upcoming episodes
   def GetFutureShows(self):
-      result=json.load(urllib.urlopen(settings.__url__+'?cmd=future&sort=date&type=today|soon'))
+      if settings.__upcoming__ == 0:
+        upcomingType = 'missed'
+      elif settings.__upcoming__ == 1:
+        upcomingType = 'today'
+      elif settings.__upcoming__ == 2:
+        upcomingType = 'today|soon'
+      elif settings.__upcoming__ == 3:
+        upcomingType = 'today|soon|later'
+      result=json.load(urllib.urlopen(settings.__url__+'?cmd=future&sort=date&type='+upcomingType))
       future_list = result['data']
       return future_list
 
