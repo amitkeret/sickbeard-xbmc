@@ -2,6 +2,7 @@ import urllib
 import socket
 import json
 import settings
+import string
 
 timeout = 45
 socket.setdefaulttimeout(timeout)
@@ -69,14 +70,16 @@ class SB:
 
   # Get list of upcoming episodes
   def GetFutureShows(self):
-      if settings.__upcoming__ == "0":
-        upcomingType = 'missed'
-      elif settings.__upcoming__ == "1":
-        upcomingType = 'today'
-      elif settings.__upcoming__ == "2":
-        upcomingType = 'today|soon'
-      elif settings.__upcoming__ == "3":
-        upcomingType = 'today|soon|later'
+      upcomingTypeList = []
+      if settings.__upcoming_missed__ == "true":
+        upcomingTypeList.append('missed')
+      if settings.__upcoming_today__ == "true":
+        upcomingTypeList.append('today')
+      if settings.__upcoming_soon__ == "true":
+        upcomingTypeList.append('soon')
+      if settings.__upcoming_later__ == "true":
+        upcomingTypeList.append('later')
+      upcomingType = string.join(upcomingTypeList, '|')
       result=json.load(urllib.urlopen(settings.__url__+'?cmd=future&sort=date&type='+upcomingType))
       future_list = result['data']
       return future_list

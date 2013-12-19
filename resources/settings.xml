@@ -12,7 +12,11 @@
 <setting id="Sickbeard Username" type="text" label="Sickbeard Username" default="" />
 <setting id="Sickbeard Password" type="text" label="Sickbeard Password" default="" />
 </category>
-<category label="Lists">
-<setting id="Upcoming type" type="enum" label="Which Upcoming shows to list" values="Missed only|Airing today|Airing today &amp; soon|All upcoming episodes" default="2" />
+<category label="Upcoming">
+<setting type="lsep" label="Which Upcoming episodes to list" />
+<setting id="upcoming_missed" label="Missed episodes" subsetting="true" type="bool" default="false" />
+<setting id="upcoming_today" label="Airing today" subsetting="true" type="bool" default="true" />
+<setting id="upcoming_soon" label="Airing sometime next week" subsetting="true" type="bool" default="true" />
+<setting id="upcoming_later" label="Airing anytime in the future" subsetting="true" type="bool" default="false" />
 </category>
 </settings>

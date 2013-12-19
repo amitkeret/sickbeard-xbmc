@@ -57,6 +57,10 @@ def GetAPIKey(ip, port, use_ssl, username, password, custom_url):
         displayError("4")
     return APIKey
 
+def checkUpcoming():
+    if __upcoming_missed__ == "false" and __upcoming_today__ == "false" and __upcoming_soon__ == "false" and __upcoming_later__ == "false":
+        displayError("5")
+
 # Set constants
 __addon__ = xbmcaddon.Addon(id='plugin.program.sickbeard')
 __ip__ = __addon__.getSetting('Sickbeard IP')
@@ -69,7 +73,10 @@ if __url_bool__ == "true":
     __custom_url__= __addon__.getSetting('Sickbeard URL')
 else:
     __custom_url__= ""
-__upcoming__= __addon__.getSetting('Upcoming type')
+__upcoming_missed__= __addon__.getSetting('upcoming_missed')
+__upcoming_today__= __addon__.getSetting('upcoming_today')
+__upcoming_soon__= __addon__.getSetting('upcoming_soon')
+__upcoming_later__= __addon__.getSetting('upcoming_later')
 
 # Show error pop up then exit plugin
 def messageWindow(header, message):
@@ -92,10 +99,13 @@ def displayError(error_code):
         errorWindow("Sickbeard Error", "Unable to connect to Sickbeard.\nCheck Sickbeard IP and port.")
     elif error_code == "4":
         errorWindow("Sickbeard Error", "Unable to retrieve API key.\nCheck API is enabled under general settings.")
-
+    elif error_code == "5":
+        errorWindow("Sickbeard Error", 'Must choose at least one type\nof "Upcoming episodes" to list')
 
 __APIKey__ = GetAPIKey(__ip__, __port__, __ssl_bool__, __username__,__password__, __custom_url__)
 if __ssl_bool__ == "true":
     __url__='https://'+__ip__+':'+__port__+'/api/'+__APIKey__+'/'
 else:
     __url__='http://'+__ip__+':'+__port__+'/api/'+__APIKey__+'/'
+
+checkUpcoming()
